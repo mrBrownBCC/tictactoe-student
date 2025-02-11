@@ -24,53 +24,19 @@ public class NumSimulationScreen extends ScreenAdapter {
 
     public NumSimulationScreen(TicTacToe game) {
         this.game = game;
-        System.out.println("created!!");
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin(Gdx.files.internal("skins/glassy/glassy-ui.json"));
-        // Load the skin
+        
 
-        // load image
-        Texture backgroundTexture = new Texture(Gdx.files.internal("space_tictactoe.png"));// note that this is stored
-                                                                                           // in assets directory
-        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+        //checkpoint 3 - add more stuff!
 
-        // title
-        Container<Label> titleLabel = Constants.createLabelWithBackgrounColor("How many rounds?", Color.BLACK, skin);
-
-        Table table = new Table();
-        table.setFillParent(true);
-        table.center();
-
-        table.add(titleLabel).pad(10).row();
-        table.setBackground(backgroundDrawable);
-        table.defaults().maxHeight(120).fillY().pad(2);
-
+    
         TextField roundsInput = new TextField("", skin);
         roundsInput.setMessageText("Enter number of rounds");
-        // Set a preferred width (adjust as needed).
-        table.add(roundsInput).pad(10).row();
-
-        TextButton continueButton = new TextButton("Continue", skin);
-        continueButton.getLabel().setFontScale(.6f);
-        continueButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                try {
-                    int numberOfRounds = Integer.parseInt(roundsInput.getText());
-                    
-                    game.setNumberOfRounds(numberOfRounds);
-                    game.setScreen(new GameDisplay(game));
-                   
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid number entered: " + roundsInput.getText());
-                    // Optionally: show an error message to the user via a dialog or label.
-                }
-            }
-        });
-        table.add(continueButton).width(150).pad(10).row();
-        stage.addActor(table);
+       
+        stage.addActor(roundsInput);
     }
 
     @Override

@@ -33,29 +33,9 @@ public class TicTacToe extends Game {
     }
 
     public void setPlayer(int curPlayer, String option) {
-        Player newPlayer;
-        if(option == "Human") {
-            newPlayer = new Human();
-        } else if(option == "Random AI") {
-            newPlayer = new RandomAI();
-        } else if(option == "Slightly Smart AI") {
-            newPlayer = new SlightlySmartAI();
-        } else if(option == "Smart AI") {
-            newPlayer = new SmartAI();
-        } else {
-            throw new IllegalArgumentException("Invalid player type: " + option);
-        }
-        if (curPlayer == 0) {// on first go, progress to second player
-            player1 = newPlayer;
-            setScreen(new PlayerSelectionScreen(this, 1));
-        } else {// on second go, either choose number of rounds or start game
-            player2 = newPlayer;
-            if (isSimulated) {
-                setScreen(new NumSimulationScreen(this));
-            } else {
-                setScreen(new GameDisplay(this));
-            }
-        }
+        //checkpoint 1 - set player, then determine what screen to go to next with setScreen(new ______)
+        //NOTE - the only player types that you have programmed so gr are Human and RandomAI
+
     }
 
     public void setSimulated(boolean isSimulated) {

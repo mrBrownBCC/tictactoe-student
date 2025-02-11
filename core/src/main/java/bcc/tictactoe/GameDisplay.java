@@ -24,6 +24,7 @@ public class GameDisplay extends ScreenAdapter {
     private Stage stage;
     private Skin skin;
 
+    //up to you to modify these if you'd like!
     private final float BOARD_X = 90;
     private final float BOARD_Y = 70;
     private final float BOARD_WIDTH = 300;
@@ -36,66 +37,22 @@ public class GameDisplay extends ScreenAdapter {
     private TextButton playAgainButton;
 
     
-    private Container<Label> curPlayerDisplay; 
-    private Container<Label> player1Stats;
-    private Container<Label> player2Stats;
 
 
     public GameDisplay(TicTacToe game) {
-        this.game = game;
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-
-        skin = new Skin(Gdx.files.internal("skins/glassy/glassy-ui.json"));
-        // Load the skin
-
-        // load image
-        Texture backgroundTexture = new Texture(Gdx.files.internal("space_tictactoe.png"));// note that this is stored
-                                                                                           // in assets directory
-        Image backgroundImage = new Image(backgroundTexture);
-        backgroundImage.setFillParent(true);
-        stage.addActor(backgroundImage);
-
+        //set up the screen you you like
         
-        // title
-        Container<Label> titleLabel = Constants.createLabelWithBackgrounColor(
-                game.getPlayer1() + "(x) vs " + game.getPlayer2() + "(o)", Color.BLACK, skin);
-            
         
-
-        titleLabel.setPosition(50, 20);
-        titleLabel.pack();
-        stage.addActor(titleLabel);
-
-        curPlayerDisplay= Constants.createLabelWithBackgrounColor("Current Player: X" ,Color.BLACK,  skin);
-        curPlayerDisplay.setPosition(10, 440);
-        curPlayerDisplay.pack();
-        stage.addActor(curPlayerDisplay);
-
-        player1Stats = Constants.createLabelWithBackgrounColor(game.getPlayer1().toString() + "(X): " + "0W 0L 0D", Color.BLACK, skin);
-        player2Stats = Constants.createLabelWithBackgrounColor(game.getPlayer1().toString() + "(O): " + "0W 0L 0D", Color.BLACK, skin);
-        
-        player1Stats.setPosition(210, 430);
-        player2Stats.setPosition(210, 400);
-        
-        player1Stats.pack();
-        player2Stats.pack();
-
-        stage.addActor(player1Stats);
-        stage.addActor(player2Stats);
-
-        game.setBoardState(new Board());
         initTableDisplay();
         updateBoardDisplay();
     }
 
-    public void initTableDisplay() {
+    public void initTableDisplay() {// initializes tic tac toe board - no changes needed 
         boardTable = new Table();
         boardTable.setPosition(BOARD_X, BOARD_Y);
         boardTable.setSize(BOARD_WIDTH, BOARD_HEIGHT);
 
         // Set the background image.
-        // (Replace "path/to/background.png" with the actual path later.)
         Texture backgroundTexture = new Texture(Gdx.files.internal("tictactoe_board.png"));
         TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
         boardTable.setBackground(backgroundDrawable);
@@ -126,88 +83,33 @@ public class GameDisplay extends ScreenAdapter {
 
     
     public void handleBoardClick(int row, int col) {
-        if(gameOver) return;
-
-        if(game.getCurPlayerObj() instanceof Human) {
-            if(game.getBoardState().makeMove(row, col, game.getCurPlayerMark())){
-                handleMoveMade();
-            }
-        }
+        //checkpoint 2
+        //this position was clicked, play the move, then call handle move made
     }
 
-    public void handleMoveMade(){
-        updateBoardDisplay();
-        Mark winner = game.getBoardState().checkWin();
-        String result = "";
-        if(winner == null){//no winner yet, its still going
-            game.nextPlayer();
-            curPlayerDisplay.getActor().setText("Current Player: " + game.getCurPlayerMark());
+    public void handleMoveMade(){//checkpoint 2
+        //call updateBoardDisplay
+        //check for a win or tie. If there is one, call showResult() with a message containing the winner, and update the player stats. 
+       
 
-        } else if (winner == Mark.TIE) {//tie
-            game.getPlayer1().incrementTies();
-            game.getPlayer2().incrementTies();
-            result = "Tie!";
-        } else if(winner == Mark.X) {//X wins
-            game.getPlayer1().incrementWins();
-            game.getPlayer2().incrementLosses();
-            result = "X wins!";
-        } else if(winner == Mark.O) {//O wins
-            game.getPlayer2().incrementWins();
-            game.getPlayer1().incrementLosses();
-            result = "O wins!";
-        }
-        if (!result.isEmpty()) {
-            player1Stats.getActor().setText(game.getPlayer1().toString() + "(X): " + game.getPlayer1().getRecord());
-            player2Stats.getActor().setText(game.getPlayer2().toString() + "(O): " + game.getPlayer2().getRecord());
-            gameOver = true;
-            if(game.getIsSimulated()){
-                if(game.getRound() < game.getNumberOfRounds()){
-                    resetGame();
-                    game.incrementRound();
-                } else {
-                    //do nothing
-                }
-            } else {
-                showResult(result);
-            }
-        }
+        //checkpoint 3 modification
+        //if game is simulated, instead of having a popup by calling showresult, start the next game if we have not run all the simulations
+        
     }
 
     private void showResult(String result) {
-        // Create an overlay table to show the result.
-        final Table resultTable = new Table();
-        resultTable.setFillParent(true);
-        resultTable.center();
-        stage.addActor(resultTable);
+        // Create an overlay to show the result. Include a button to play again. 
 
-        resultLabel = new Label(result, skin);
-        resultLabel.setFontScale(3f);
-        resultLabel.setColor(Color.RED);
-
-        playAgainButton = new TextButton("Play Again", skin);
-        playAgainButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Reset the game when the button is clicked.
-                resetGame();
-                resultTable.remove(); // Remove the result overlay.
-            }
-        });
-
-        resultTable.add(resultLabel).pad(10);
-        resultTable.row();
-        resultTable.add(playAgainButton).pad(10);
+        // when the button is clicked, it should dissappear - you can do this using the .remove() command. 
+        
     }
     public void resetGame() {
-        game.getBoardState().reset();
-        gameOver = false;
-        updateBoardDisplay();
-        game.resetCurPlayer();
+        //update board state, current player, etc. 
     }
 
-    public void updateBoardDisplay() {
+    public void updateBoardDisplay() {//updates the board, you should call this if a move is made. No need to change. 
         boardTable.clearChildren();
-        Mark[][] grid = game.getBoardState().getGrid(); // Assumes boardState is accessible
+        Mark[][] grid = game.getBoardState().getGrid();
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 Mark mark = grid[row][col];
@@ -220,7 +122,6 @@ public class GameDisplay extends ScreenAdapter {
                 Label cellLabel = new Label(text, skin);
                 cellLabel.setAlignment(Align.center);     // Center text within the label.
                 cellLabel.setFontScale(5f); 
-                // Each cell gets equal width and height.
                 boardTable.add(cellLabel).width(BOARD_WIDTH / 3).height(BOARD_HEIGHT / 3);
             }
             boardTable.row();
@@ -233,11 +134,8 @@ public class GameDisplay extends ScreenAdapter {
         stage.act(delta);
         stage.draw();
 
-        if(!(game.getCurPlayerObj() instanceof Human) && !gameOver) {
-            Move move = game.getCurPlayerObj().makeMove(game.getBoardState().clone(), game.getCurPlayerMark());
-            game.getBoardState().makeMove(move, game.getCurPlayerMark());
-           handleMoveMade();
-        }
+        //checkpoint 3 - if it is not a humans turn, automate the AI's move here
+        //call handleMoveMade afterwards
     }
 
     @Override

@@ -21,46 +21,18 @@ public class PlayerSelectionScreen extends ScreenAdapter{
     private Stage stage;
     private Skin skin;
 
-    public PlayerSelectionScreen(TicTacToe game, int curPlayer) {
-        this.game = game;
-        System.out.println("created!!");
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+    public PlayerSelectionScreen(TicTacToe game, int curPlayer) {//checkpoint 1
+       //load skin
 
-        skin = new Skin(Gdx.files.internal("skins/glassy/glassy-ui.json"));
-        // Load the skin
+       //add title saying something like "select player"
 
-        //load image
-        Texture backgroundTexture = new Texture(Gdx.files.internal("space_tictactoe.png"));//note that this is stored in assets directory
-        TextureRegionDrawable backgroundDrawable =
-                new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+       //if you would like a background color behind the title, you can use the helper method in the Constants file
 
-        //title
-        Container<Label> titleLabel = Constants.createLabelWithBackgrounColor("Please select Player " + (curPlayer + 1),Color.BLACK, skin);
-      
+       //check out the documentation linked in the readme / on canvas
 
-        Table table = new Table();
-        table.setFillParent(true);
-        table.center();
-        
-        table.add(titleLabel).pad(10).row();
-        table.setBackground(backgroundDrawable);
-        table.defaults().maxHeight(90).fillY().pad(2);
-
-        for (String option : Constants.PLAYER_OPTIONS) {
-            if(game.getIsSimulated() && option.equals("Human")) continue;
-            TextButton button = new TextButton(option, skin);
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    game.setPlayer(curPlayer, option);
-                }
-            });
-           // button.setTransform(true); 
-           // button.setScale(.5f);
-            table.add(button).pad(2).row();
-        }
-        stage.addActor(table);
+       //add buttons to select from the player types listed in constants.java. If there isSimulated is true, don't let human be an option. 
+    
+       //curplayer will either be 0 or 1
     }
 
     @Override
