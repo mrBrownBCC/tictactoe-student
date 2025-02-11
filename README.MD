@@ -47,7 +47,8 @@ Create simulation mode, where you can face off different AIs you create against 
 ## Checkpoint 4
 Due 3/7
 ### Goal 
-Implement perfect AI using minimax algorithm. 
+Implement perfect AI using minimax algorithm. We will do an in class activity to go over this algorithm. 
+
 ### Programming Steps
 1. Create a new class called SmartAI. Implement Minimax. Test. 
 
@@ -57,7 +58,7 @@ To test your code, interact with the GUI you create! Click run with the file Lwj
 The running version of your project will be available at the forwarded address from port 6080. 
 
 # Publishing:
-NOTE - currently this is not working. I am not sure why, but am troubleshooting. For now, ,
+NOTE - currently this is not working. I am not sure why, but am troubleshooting. For now, all submission will be done with git commands. 
 Run 
 ```
 1) npm run build
